@@ -1,0 +1,53 @@
+package com.toylang;
+import java_cup.runtime.Symbol;
+
+parser code
+{:
+    private Symbol s;
+
+    public void syntax_error(Symbol s){
+        this.s = s;
+    }
+
+    public Symbol getS(){
+        return this.s;
+    }
+
+:};
+
+terminal Encender, Apagar, Calentar, Cocinar, H, M, S, Linea, Suma, Resta, 
+    Multiplicacion, Division, AParentesis, CParentesis, DosPuntos, Punto, NumeroEntero;
+
+non terminal START, CAMBIARESTADO, COMANDOFUNCION, FUNCION, COMANDO, TIEMPO, 
+    TIEMPOLVL1, TIEMPOLVL2, TIEMPOLVL3, TIPOTIEMPO1, TIPOTIEMPO2, TIPOTIEMPO3;
+
+start with START;
+
+START ::= COMANDO;
+
+COMANDO ::= CAMBIARESTADO Punto
+    | FUNCION Punto
+    | CAMBIARESTADO COMANDO Punto
+    | FUNCION COMANDO Punto
+    ;
+
+CAMBIARESTADO ::= Encender | Apagar;
+
+FUNCION ::= COMANDOFUNCION AParentesis TIEMPO CParentesis;
+
+COMANDOFUNCION ::= Calentar | Cocinar;
+
+TIEMPO ::= TIEMPOLVL1 TIPOTIEMPO1
+    | TIEMPOLVL2 TIPOTIEMPO2
+    | TIEMPOLVL3 TIPOTIEMPO3
+    ;
+
+TIEMPOLVL1 ::= NumeroEntero;
+TIEMPOLVL2 ::= NumeroEntero DosPuntos NumeroEntero;
+TIEMPOLVL3 ::= NumeroEntero DosPuntos NumeroEntero DosPuntos NumeroEntero;
+
+TIPOTIEMPO1 ::= H | M | S;
+TIPOTIEMPO2 ::= M | S;
+TIPOTIEMPO3 ::= S;
+
+
